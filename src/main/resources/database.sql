@@ -1,0 +1,41 @@
+use techeecommerce;
+
+CREATE TABLE products (
+	id INT NOT NULL AUTO_INCREMENT,
+  image LONGBLOB,
+  title VARCHAR(255) NOT NULL,
+  description VARCHAR(255),
+  quantity INT DEFAULT 0 NOT NULL,
+  rating INT DEFAULT 0 CHECK(rating <= 5),
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_product PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE stock (
+	id INT NOT NULL,
+  product_id INT,
+  quantity INT NOT NULL,
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_stock PRIMARY KEY (id),
+  CONSTRAINT fk_stock_product FOREIGN KEY (product_id) REFERENCES products(id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE categories (
+	id INT NOT NULL AUTO_INCREMENT,
+  product_id INT,
+  code INT NOT NULL CHECK(code = 4),
+  name VARCHAR(100) NOT NULL,
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_category PRIMARY KEY (id),
+  CONSTRAINT fk_category_product FOREIGN KEY (product_id) REFERENCES products(id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE currency (
+	id INT NOT NULL AUTO_INCREMENT,
+  product_id INT,
+  currency VARCHAR(3) NOT NULL,
+  local VARCHAR(50) NOT NULL,
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_currency PRIMARY KEY (id),
+  CONSTRAINT fk_currency_product FOREIGN KEY (product_id) REFERENCES products(id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
